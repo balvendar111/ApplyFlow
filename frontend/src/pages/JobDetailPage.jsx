@@ -133,7 +133,7 @@ export default function JobDetailPage() {
           Back to search
         </Link>
         <div className="flex items-center gap-2">
-          <HeaderProfile resume={resume} authEmail={authUser?.email} onOpenUpload={() => navigate("/app")} onLogout={logout} />
+          <HeaderProfile resume={resume} authEmail={authUser?.email} isAdmin={authUser?.isAdmin} onOpenUpload={() => navigate("/app")} onLogout={logout} />
           <ThemeToggle darkMode={darkMode} setDarkMode={setDarkMode} />
         </div>
       </header>

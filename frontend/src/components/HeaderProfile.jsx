@@ -1,16 +1,19 @@
 import { useState, useRef, useEffect } from "react";
-import { User, ChevronDown, Upload, LogOut } from "lucide-react";
+import { User, ChevronDown, Upload, LogOut, Shield } from "lucide-react";
+import AdminDashboard from "./AdminDashboard";
+import SkillsModal from "./SkillsModal";
 
 /**
  * Compact profile in header (top-right, where login/signup usually is).
  * Shows candidate name + avatar when resume exists; "Add profile" when not.
- * Click opens dropdown with full profile.
+ * Click opens dropdown with full profile. Admin-only: User Activity link.
  */
-const SKILLS_PREVIEW = 15;
+const SKILLS_PREVIEW = 6;
 
-export default function HeaderProfile({ resume, authEmail, onOpenUpload, onLogout }) {
+export default function HeaderProfile({ resume, authEmail, isAdmin, onOpenUpload, onLogout }) {
   const [open, setOpen] = useState(false);
-  const [skillsExpanded, setSkillsExpanded] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [showSkills, setShowSkills] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
@@ -22,7 +25,7 @@ export default function HeaderProfile({ resume, authEmail, onOpenUpload, onLogou
   }, []);
 
   useEffect(() => {
-    if (!open) setSkillsExpanded(false);
+    if (!open) setShowSkills(false);
   }, [open]);
 
   const displayName = resume?.name || (authEmail ? authEmail.split("@")[0] : null);
@@ -39,6 +42,9 @@ export default function HeaderProfile({ resume, authEmail, onOpenUpload, onLogou
 
   return (
     <div className="relative" ref={ref}>
+      {showSkills && resume?.skills?.length > 0 && (
+        <SkillsModal skills={resume.skills} title="My Skills" onClose={() => setShowSkills(false)} />
+      )}
       <button
         onClick={() => setOpen(!open)}
         className={`
@@ -98,23 +104,34 @@ export default function HeaderProfile({ resume, authEmail, onOpenUpload, onLogou
               {(resume?.skills?.length || 0) > 0 && (
                 <div>
                   <p className="text-xs font-medium text-[var(--secondary)] mb-1.5">Skills</p>
-                  <div className="flex flex-wrap gap-1">
-                    {(skillsExpanded ? resume.skills : resume.skills.slice(0, SKILLS_PREVIEW)).map((s, i) => (
-                      <span key={i} className="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-xs text-[var(--primary)]">
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); setShowSkills(true); }}
+                    title="Click to view all skills"
+                    className="flex flex-wrap gap-1 text-left w-full rounded-lg p-1.5 -m-1.5 hover:bg-stone-100 dark:hover:bg-stone-800/50 transition-colors group cursor-pointer"
+                  >
+                    {resume.skills.slice(0, SKILLS_PREVIEW).map((s, i) => (
+                      <span key={i} className="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-xs text-[var(--primary)] group-hover:bg-orange-100 dark:group-hover:bg-orange-950/40">
                         {s}
                       </span>
                     ))}
                     {resume.skills.length > SKILLS_PREVIEW && (
-                      <button
-                        type="button"
-                        onClick={(e) => { e.stopPropagation(); setSkillsExpanded(!skillsExpanded); }}
-                        className="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-xs text-[var(--accent)] hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
-                      >
-                        {skillsExpanded ? "Show less" : `+${resume.skills.length - SKILLS_PREVIEW} more`}
-                      </button>
+                      <span className="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-xs text-[var(--accent)] font-medium group-hover:bg-orange-100 dark:group-hover:bg-orange-950/40">
+                        +{resume.skills.length - SKILLS_PREVIEW} more
+                      </span>
                     )}
-                  </div>
+                  </button>
                 </div>
+              )}
+              {isAdmin && (
+                <button
+                  type="button"
+                  onClick={() => { setOpen(false); setShowAdmin(true); }}
+                  className="mt-2 pt-2 border-t border-stone-200 dark:border-stone-700 w-full flex items-center justify-center gap-2 text-sm text-[var(--accent)] hover:underline"
+                >
+                  <Shield className="w-4 h-4" />
+                  User Activity (Admin)
+                </button>
               )}
               {onLogout && (
                 <button
@@ -151,6 +168,7 @@ export default function HeaderProfile({ resume, authEmail, onOpenUpload, onLogou
           )}
         </div>
       )}
+      {showAdmin && <AdminDashboard onClose={() => setShowAdmin(false)} />}
     </div>
   );
 }

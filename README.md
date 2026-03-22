@@ -4,6 +4,10 @@
 
 ![Tech: React · FastAPI · Claude · Tailwind · SQLite](https://img.shields.io/badge/Stack-React%20%C2%B7%20FastAPI%20%C2%B7%20Claude%20%C2%B7%20Tailwind-blue?style=flat-square)
 
+## Demo
+
+**[▶️ Watch Demo Video on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7441485080226590720/)** — Full walkthrough of job search, resume upload, AI cover letters, and application tracking.
+
 ## Features
 
 - **Job Search** — 15 profiles (Data Scientist, Frontend, Backend, ML, etc.), filters: location, posted date (24h, 3d, 7d), experience
@@ -134,7 +138,15 @@ A full-stack job search app that helps you find roles faster and apply smarter.
 
 **Tech:** React · FastAPI · Claude AI · Tailwind · SQLite
 
-[GitHub] | [Live Demo]
+[GitHub](https://github.com/balvendar111/ApplyFlow) · [Live Demo](https://applyflow.onrender.com) · [LinkedIn](https://www.linkedin.com/in/balvendra-singh-6834931a7/)
+
+---
+
+## Author
+
+**Balvendra Singh**
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/balvendra-singh-6834931a7/)
 
 ---
 

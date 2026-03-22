@@ -16,6 +16,7 @@ from slowapi.errors import RateLimitExceeded
 from app.models.database import init_db
 from app.limiter import limiter
 from app.api.auth import router as auth_router
+from app.api.admin import router as admin_router
 from app.api.jobs import router as jobs_router
 from app.api.resume import router as resume_router
 from app.api.apply import router as apply_router
@@ -60,6 +61,7 @@ def startup():
 
 # API routes (must be before static catch-all)
 app.include_router(auth_router)
+app.include_router(admin_router)
 app.include_router(jobs_router)
 app.include_router(resume_router)
 app.include_router(apply_router)

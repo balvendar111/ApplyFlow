@@ -174,7 +174,7 @@ function App() {
           </div>
         </Link>
         <div className="flex items-center gap-2">
-          <HeaderProfile resume={resume} authEmail={authUser?.email} onOpenUpload={() => uploadSectionRef.current?.scrollIntoView({ behavior: "smooth" })} onLogout={logout} />
+          <HeaderProfile resume={resume} authEmail={authUser?.email} isAdmin={authUser?.isAdmin} onOpenUpload={() => uploadSectionRef.current?.scrollIntoView({ behavior: "smooth" })} onLogout={logout} />
           <ThemeToggle darkMode={darkMode} setDarkMode={setDarkMode} />
         </div>
       </header>

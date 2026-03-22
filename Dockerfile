@@ -18,6 +18,8 @@ COPY --from=frontend /app/dist ./frontend_dist
 ENV SERVE_FRONTEND=true
 ENV FRONTEND_DIST=/app/frontend_dist
 ENV PYTHONUNBUFFERED=1
+ENV PORT=8000
 
 EXPOSE 8000
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Render injects PORT; fallback 8000
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}

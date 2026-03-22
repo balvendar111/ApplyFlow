@@ -1,10 +1,14 @@
+import { useState } from "react";
 import { User, Mail, Phone, Briefcase, GraduationCap, Code2 } from "lucide-react";
+import SkillsModal from "./SkillsModal";
 
 /**
  * Displays candidate profile parsed from uploaded resume.
  * Shows name, contact, experience, education, and skills.
  */
 export default function CandidateProfile({ resume }) {
+  const [showSkills, setShowSkills] = useState(false);
+
   if (!resume) {
     return (
       <div className="rounded-xl border border-dashed border-stone-300 dark:border-stone-600 bg-stone-50/50 dark:bg-stone-900/30 p-4 text-center">
@@ -89,16 +93,24 @@ export default function CandidateProfile({ resume }) {
               <Code2 className="w-3.5 h-3.5 text-[var(--accent)]" />
               Skills ({skills.length})
             </div>
-            <div className="flex flex-wrap gap-1.5">
+            <button
+              type="button"
+              onClick={() => setShowSkills(true)}
+              title="Click to view all skills"
+              className="flex flex-wrap gap-1.5 text-left w-full rounded-lg p-2 -m-2 hover:bg-stone-100 dark:hover:bg-stone-800/50 transition-colors group cursor-pointer"
+            >
               {skills.map((skill, i) => (
                 <span
                   key={i}
-                  className="px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-xs text-[var(--primary)]"
+                  className="px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-xs text-[var(--primary)] group-hover:bg-orange-100 dark:group-hover:bg-orange-950/40 transition-colors"
                 >
                   {skill}
                 </span>
               ))}
-            </div>
+            </button>
+            {showSkills && (
+              <SkillsModal skills={skills} title="Skills" onClose={() => setShowSkills(false)} />
+            )}
           </div>
         )}
       </div>

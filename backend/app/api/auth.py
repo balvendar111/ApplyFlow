@@ -1,6 +1,8 @@
 """Auth: register, login, Google OAuth, me, password reset."""
 import logging
 import os
+
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "balvendarsingh111@gmail.com").lower().strip()
 import re
 import secrets
 from datetime import datetime, timedelta
@@ -40,7 +42,8 @@ class LoginRequest(BaseModel):
 @router.get("/me")
 async def get_me(user: User = Depends(get_current_user)):
     """Get current user info (email) for profile display."""
-    return {"user": {"id": user.id, "email": user.email}}
+    is_admin = bool(ADMIN_EMAIL and user.email.lower() == ADMIN_EMAIL)
+    return {"user": {"id": user.id, "email": user.email, "isAdmin": is_admin}}
 
 
 @router.post("/register")
@@ -61,8 +64,9 @@ async def register(request: Request, req: RegisterRequest, db: Session = Depends
     db.add(user)
     db.commit()
     db.refresh(user)
+    is_admin = bool(ADMIN_EMAIL and user.email.lower() == ADMIN_EMAIL)
     token = create_access_token({"sub": str(user.id)})
-    return {"token": token, "user": {"id": user.id, "email": user.email}}
+    return {"token": token, "user": {"id": user.id, "email": user.email, "isAdmin": is_admin}}
 
 
 @router.post("/login")
@@ -74,8 +78,9 @@ async def login(request: Request, req: LoginRequest, db: Session = Depends(get_d
     user = db.query(User).filter(User.email == req.email.lower()).first()
     if not user or not verify_password(req.password, user.hashed_password):
         raise HTTPException(401, "Invalid email or password")
+    is_admin = bool(ADMIN_EMAIL and user.email.lower() == ADMIN_EMAIL)
     token = create_access_token({"sub": str(user.id)})
-    return {"token": token, "user": {"id": user.id, "email": user.email}}
+    return {"token": token, "user": {"id": user.id, "email": user.email, "isAdmin": is_admin}}
 
 
 class GoogleAuthRequest(BaseModel):
@@ -142,8 +147,9 @@ async def reset_password(request: Request, req: ResetPasswordRequest, db: Sessio
     user.hashed_password = hash_password(req.new_password)
     db.delete(prt)
     db.commit()
+    is_admin = bool(ADMIN_EMAIL and user.email.lower() == ADMIN_EMAIL)
     token = create_access_token({"sub": str(user.id)})
-    return {"token": token, "user": {"id": user.id, "email": user.email}}
+    return {"token": token, "user": {"id": user.id, "email": user.email, "isAdmin": is_admin}}
 
 
 @router.post("/google")
@@ -193,5 +199,6 @@ async def google_auth(req: GoogleAuthRequest, db: Session = Depends(get_db)):
         db.add(user)
         db.commit()
         db.refresh(user)
+    is_admin = bool(ADMIN_EMAIL and user.email.lower() == ADMIN_EMAIL)
     token = create_access_token({"sub": str(user.id)})
-    return {"token": token, "user": {"id": user.id, "email": user.email}}
+    return {"token": token, "user": {"id": user.id, "email": user.email, "isAdmin": is_admin}}
