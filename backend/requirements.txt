@@ -1,0 +1,32 @@
+# Core
+fastapi==0.109.2
+uvicorn[standard]==0.27.1
+
+# Database
+sqlalchemy==2.0.25
+psycopg2-binary>=2.9.0  # PostgreSQL (production; optional for SQLite)
+
+# HTTP / API (pin <0.28 for anthropic proxy compat)
+httpx>=0.26.0,<0.28
+
+# File processing
+PyPDF2==3.0.1
+python-docx==1.1.0
+pdfplumber==0.10.4
+pymupdf==1.24.10
+
+# Environment
+python-dotenv==1.0.1
+
+# Auth
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+google-auth==2.36.0
+requests>=2.28.0  # required by google-auth for token verification
+
+# Rate limiting
+slowapi==0.1.9
+
+# LLM (Anthropic + Ollama fallback)
+anthropic==0.18.1
+openai>=1.0

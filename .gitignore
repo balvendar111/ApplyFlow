@@ -1,0 +1,61 @@
+# Environment and secrets (NEVER commit these)
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+backend/.env
+frontend/.env
+
+# API keys, certs
+*.pem
+*.key
+*.crt
+credentials.json
+secrets.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+backend/*.db
+
+# Uploaded files
+resumes/
+backend/resumes/
+
+# Node / Frontend
+node_modules/
+frontend/node_modules/
+
+# Build outputs
+dist/
+frontend/dist/
+
+# Logs and cache
+*.log
+logs/
+.cache/
+
+# OS and editors
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Cursor IDE
+.cursor/

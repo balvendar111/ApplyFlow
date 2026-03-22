@@ -1,0 +1,39 @@
+# ApplyFlow - Render Blueprint
+# Deploy: Push to GitHub → Connect repo at render.com → New Blueprint
+
+databases:
+  - name: applyflow-db
+    plan: free
+    databaseName: applyflow
+
+services:
+  - type: web
+    runtime: docker
+    name: applyflow
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: applyflow-db
+          property: connectionString
+      - key: SERVE_FRONTEND
+        value: "true"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGINS
+        sync: false
+        # After deploy, set to your Render URL e.g. https://applyflow-xxx.onrender.com
+      - key: RESET_PASSWORD_BASE_URL
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: RAPIDAPI_KEY
+        sync: false
+      - key: INDIANAPI_KEY
+        sync: false
+      - key: ADZUNA_APP_ID
+        sync: false
+      - key: ADZUNA_APP_KEY
+        sync: false
